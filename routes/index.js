@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models').Book;
-const Sequelize = require('sequelize');
 
 
 //async handler
@@ -10,7 +9,7 @@ function asyncHandler(cb) {
       try {
           await cb(req, res, next);
       } catch (error) {
-          next(error);
+          res.status(500).send(error);
       }
   }
 }
@@ -23,7 +22,7 @@ router.get('/', (req, res) => {
 /*GET books page*/
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
-  res.render('index', {books} );
+  res.render('index', {books});
 }));
 
 /*GET new books page*/
